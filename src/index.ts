@@ -1,12 +1,12 @@
-import { generateText, tool } from "ai";
+import { generateText, stepCountIs, tool } from "ai";
 import { ollama } from "ollama-ai-provider-v2";
 import z from "zod";
 
 async function main() {
   const response = await generateText({
-    model: ollama("qwen3:4b"),
-    prompt:
-      "You are an agent helping users find information about Pokemon. Always call the PokeAPI tool to get information about Pokemon and then return a short text summary. I want to know about Mewtwo. /no_thinking",
+    model: ollama("hf.co/unsloth/Qwen3-4B-Instruct-2507-GGUF:Q4_K_S"),
+    prompt: "Tell me about Mewtwo. Write a short text summary. Max 200 words.",
+    stopWhen: stepCountIs(10),
     tools: {
       pokeAPI: tool({
         description: "Call the PokeAPI to get information about Pokemon.",
@@ -15,7 +15,9 @@ async function main() {
             `https://pokeapi.co/api/v2/pokemon/${pokemonName.toLowerCase()}`
           );
 
-          return res.json();
+          const response = await res.json();
+
+          return response;
         },
         inputSchema: z.object({
           pokemonName: z.string().describe("The pokemon name to search."),
@@ -24,7 +26,7 @@ async function main() {
     },
   });
 
-  console.dir(response.content, { depth: null });
+  console.dir(response.text, { depth: null });
 }
 
 main();
