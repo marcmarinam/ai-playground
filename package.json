@@ -1,0 +1,17 @@
+{
+  "name": "ai-playground",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ai": "^5.0.59",
+    "ollama-ai-provider-v2": "^1.4.1",
+    "zod": "^4.1.11"
+  }
+}
